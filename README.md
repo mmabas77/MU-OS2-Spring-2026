@@ -1,6 +1,7 @@
 # OS2 — Spring 2026
 
-**Instructors:** Dr. Mohamed Handosa · Waleed Mohamed
+**Lecturers:** Dr. Mohamed Hamdousa · Dr. Waleed Mohamed
+**Teaching Assistant & Instructor:** Mahmoud Abas
 
 ---
 
