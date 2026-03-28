@@ -1,0 +1,16 @@
+{
+  "name": "lab09-demo",
+  "version": "1.0.0",
+  "description": "Docker Compose, volumes and hot-reload demo",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start:dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

@@ -1,0 +1,45 @@
+version: "3.8"
+
+# ── Shared base configuration ─────────────────────────────────────────────────
+# This file defines all services. Use with a dev or prod override file:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml  up --build
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build
+
+services:
+
+  # ── Node.js application ─────────────────────────────────────────────────────
+  node-app:
+    build: .                        # build from local Dockerfile
+    ports:
+      - "${PORT:-3000}:3000"        # map host:container (default 3000)
+    env_file: .env                  # load all vars from .env file
+    depends_on:
+      - mongo                       # wait for mongo to start first
+
+  # ── MongoDB database ────────────────────────────────────────────────────────
+  mongo:
+    image: mongo:7                  # official MongoDB 7 image
+    ports:
+      - "27017:27017"               # expose for local tools (e.g. Compass)
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - mongo-data:/data/db         # persist data across container restarts
+
+  # ── Mongo Express (web UI) ──────────────────────────────────────────────────
+  mongo-express:
+    image: mongo-express:1          # lightweight browser-based MongoDB UI
+    ports:
+      - "8081:8081"                 # access at http://localhost:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${ME_CONFIG_MONGODB_ADMINUSERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${ME_CONFIG_MONGODB_ADMINPASSWORD}
+      # containers communicate by service name ("mongo") — Docker DNS resolves it
+      ME_CONFIG_MONGODB_SERVER: mongo
+    depends_on:
+      - mongo                       # ensure MongoDB is up before the UI starts
+
+# ── Named volumes ─────────────────────────────────────────────────────────────
+volumes:
+  mongo-data:                       # persists MongoDB data on the host

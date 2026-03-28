@@ -1,0 +1,14 @@
+version: "3.8"
+
+# ── Production overrides ──────────────────────────────────────────────────────
+# Merges on top of docker-compose.yml when running:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build
+
+services:
+  node-app:
+    build:
+      context: .
+      target: production            # use the lean 'production' stage from Dockerfile
+    environment:
+      NODE_ENV: production          # no bind-mounts; image contains all source code
+    command: npm start              # explicit start command (overrides Dockerfile CMD)

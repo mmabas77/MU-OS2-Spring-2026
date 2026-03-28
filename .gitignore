@@ -2,3 +2,15 @@ firebase-debug.log
 Topic.md
 .claude/
 .task_complete
+
+# IDE
+.idea/
+
+# Flutter
+build/
+.dart_tool/
+.metadata
+*.iml
+
+# Node
+node_modules/

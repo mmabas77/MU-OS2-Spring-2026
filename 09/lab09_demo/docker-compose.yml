@@ -1,0 +1,25 @@
+services:
+  node-app:
+    # Give the container a fixed name (same as used in docker run --name)
+    container_name: express-node-app-container
+
+    # Build the image from the Dockerfile in the current directory
+    build: .
+
+    # Map host port 4000 → container port 4000
+    ports:
+      - "4000:4000"
+
+    volumes:
+      # Bind mount (read-only): sync local project files into the container.
+      # :ro means the container can read changes but cannot write back to the host.
+      - ./:/app:ro
+
+      # Anonymous volume: keep the container's node_modules intact.
+      # Without this, the bind mount above would overwrite node_modules
+      # with whatever (possibly absent) folder exists on the host.
+      - /app/node_modules
+
+    # Load variables from the .env file
+    env_file:
+      - .env

@@ -1,0 +1,17 @@
+version: "3.8"
+
+# ── Development overrides ─────────────────────────────────────────────────────
+# Merges on top of docker-compose.yml when running:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+services:
+  node-app:
+    build:
+      context: .
+      target: development           # use the 'development' stage from Dockerfile
+    volumes:
+      - ./:/app                     # bind-mount source code for live reload
+      - /app/node_modules           # keep container's node_modules (not host's)
+    environment:
+      NODE_ENV: development
+    command: npm run dev            # start with nodemon for hot-reload
